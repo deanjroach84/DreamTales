@@ -206,18 +206,36 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
         {/* Loading State */}
         {isGenerating && (
           <div className="text-center py-12">
-            <div className="relative mb-6">
-              <div className="w-64 h-48 mx-auto rounded-2xl bg-gradient-to-br from-lavender/20 to-gentle-blue/20 animate-float flex items-center justify-center">
-                <div className="text-6xl animate-bounce-gentle">✨</div>
+            <div className="relative mb-8">
+              {/* Main story book */}
+              <div className="w-72 h-52 mx-auto rounded-3xl bg-gradient-to-br from-lavender/30 to-gentle-blue/30 animate-pulse-glow flex items-center justify-center relative overflow-hidden">
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-story-shimmer"></div>
+                
+                {/* Floating magical elements */}
+                <div className="absolute top-4 left-8 text-2xl animate-floating-stars">✨</div>
+                <div className="absolute top-8 right-6 text-xl animate-floating-stars" style={{ animationDelay: "1s" }}>🌟</div>
+                <div className="absolute bottom-6 left-6 text-lg animate-floating-stars" style={{ animationDelay: "2s" }}>💫</div>
+                <div className="absolute bottom-4 right-8 text-2xl animate-floating-stars" style={{ animationDelay: "3s" }}>✨</div>
+                
+                {/* Central book icon */}
+                <div className="text-7xl animate-bounce-gentle">📖</div>
+              </div>
+              
+              {/* Progress dots */}
+              <div className="flex items-center justify-center space-x-3 mt-6">
+                <div className="w-3 h-3 bg-coral-pink rounded-full animate-bounce"></div>
+                <div className="w-3 h-3 bg-sunshine-yellow rounded-full animate-bounce" style={{ animationDelay: "0.3s" }}></div>
+                <div className="w-3 h-3 bg-gentle-blue rounded-full animate-bounce" style={{ animationDelay: "0.6s" }}></div>
+                <div className="w-3 h-3 bg-soft-green rounded-full animate-bounce" style={{ animationDelay: "0.9s" }}></div>
               </div>
             </div>
-            <div className="flex items-center justify-center space-x-2 mb-4">
-              <div className="w-3 h-3 bg-coral-pink rounded-full animate-bounce"></div>
-              <div className="w-3 h-3 bg-sunshine-yellow rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
-              <div className="w-3 h-3 bg-gentle-blue rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
+            
+            {/* Loading text */}
+            <div className="space-y-3">
+              <p className="text-gray-700 text-xl font-fredoka animate-pulse-glow">Weaving your magical tale...</p>
+              <p className="text-gray-500 text-sm">Our storytelling wizard is crafting something special ✨</p>
             </div>
-            <p className="text-gray-600 text-lg font-medium">Creating your magical story...</p>
-            <p className="text-gray-500 text-sm mt-2">This might take a moment ✨</p>
           </div>
         )}
 

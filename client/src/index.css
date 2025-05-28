@@ -150,6 +150,29 @@
     50% { transform: translateY(-5px); }
   }
 
+  @keyframes story-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { 
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 1;
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes floating-stars {
+    0% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(120deg); }
+    66% { transform: translateY(5px) rotate(240deg); }
+    100% { transform: translateY(0px) rotate(360deg); }
+  }
+
   @keyframes rainbow-border {
     0% { border-color: #ff6b6b; }
     14% { border-color: #ffa726; }
@@ -198,6 +221,18 @@
   
   .animate-bounce-gentle {
     animation: bounce-gentle 2s ease-in-out infinite;
+  }
+
+  .animate-story-shimmer {
+    animation: story-shimmer 2s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-floating-stars {
+    animation: floating-stars 4s ease-in-out infinite;
   }
 
   .animate-rainbow-border {
