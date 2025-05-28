@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 280 100% 70%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.75rem;
+  
+  /* Custom DreamTales colors */
+  --lavender: 280 100% 93%; /* #E6E6FA */
+  --gentle-blue: 194 53% 79%; /* #B0E0E6 */
+  --soft-green: 134 41% 88%; /* #E0F2E7 */
+  --warm-cream: 44 87% 94%; /* #FDF6E3 */
+  --coral-pink: 0 69% 85%; /* #FFB3BA */
+  --sunshine-yellow: 35 100% 87%; /* #FFDFBA */
+  --cloud-white: 0 0% 99%; /* #FEFEFE */
+  --gentle-gray: 0 0% 96%; /* #F5F5F5 */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 280 100% 70%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased min-h-screen;
+    background: linear-gradient(135deg, hsl(var(--lavender)), hsl(var(--gentle-blue)), hsl(var(--soft-green)));
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Fredoka One', cursive;
+  }
+}
+
+@layer utilities {
+  .bg-lavender {
+    background-color: hsl(var(--lavender));
+  }
+  .bg-gentle-blue {
+    background-color: hsl(var(--gentle-blue));
+  }
+  .bg-soft-green {
+    background-color: hsl(var(--soft-green));
+  }
+  .bg-warm-cream {
+    background-color: hsl(var(--warm-cream));
+  }
+  .bg-coral-pink {
+    background-color: hsl(var(--coral-pink));
+  }
+  .bg-sunshine-yellow {
+    background-color: hsl(var(--sunshine-yellow));
+  }
+  .bg-cloud-white {
+    background-color: hsl(var(--cloud-white));
+  }
+  .bg-gentle-gray {
+    background-color: hsl(var(--gentle-gray));
+  }
+
+  .text-lavender {
+    color: hsl(var(--lavender));
+  }
+  .text-gentle-blue {
+    color: hsl(var(--gentle-blue));
+  }
+  .text-soft-green {
+    color: hsl(var(--soft-green));
+  }
+  .text-coral-pink {
+    color: hsl(var(--coral-pink));
+  }
+  .text-sunshine-yellow {
+    color: hsl(var(--sunshine-yellow));
+  }
+
+  .border-lavender {
+    border-color: hsl(var(--lavender));
+  }
+  .border-gentle-blue {
+    border-color: hsl(var(--gentle-blue));
+  }
+  .border-soft-green {
+    border-color: hsl(var(--soft-green));
+  }
+  .border-coral-pink {
+    border-color: hsl(var(--coral-pink));
+  }
+  .border-sunshine-yellow {
+    border-color: hsl(var(--sunshine-yellow));
+  }
+  .border-gentle-gray {
+    border-color: hsl(var(--gentle-gray));
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  @keyframes twinkle {
+    0% { opacity: 0.5; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.1); }
+  }
+  
+  @keyframes bounce-gentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  @keyframes rainbow-border {
+    0% { border-color: #ff6b6b; }
+    14% { border-color: #ffa726; }
+    28% { border-color: #ffee58; }
+    42% { border-color: #66bb6a; }
+    57% { border-color: #42a5f5; }
+    71% { border-color: #ab47bc; }
+    85% { border-color: #ec407a; }
+    100% { border-color: #ff6b6b; }
+  }
+
+  @keyframes rainbow-glow {
+    0% { 
+      box-shadow: 0 0 20px #ff6b6b80, 0 0 40px #ff6b6b40;
+    }
+    14% { 
+      box-shadow: 0 0 20px #ffa72680, 0 0 40px #ffa72640;
+    }
+    28% { 
+      box-shadow: 0 0 20px #ffee5880, 0 0 40px #ffee5840;
+    }
+    42% { 
+      box-shadow: 0 0 20px #66bb6a80, 0 0 40px #66bb6a40;
+    }
+    57% { 
+      box-shadow: 0 0 20px #42a5f580, 0 0 40px #42a5f540;
+    }
+    71% { 
+      box-shadow: 0 0 20px #ab47bc80, 0 0 40px #ab47bc40;
+    }
+    85% { 
+      box-shadow: 0 0 20px #ec407a80, 0 0 40px #ec407a40;
+    }
+    100% { 
+      box-shadow: 0 0 20px #ff6b6b80, 0 0 40px #ff6b6b40;
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-twinkle {
+    animation: twinkle 2s ease-in-out infinite alternate;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounce-gentle 2s ease-in-out infinite;
+  }
+
+  .animate-rainbow-border {
+    animation: rainbow-border 3s linear infinite;
+  }
+
+  .animate-rainbow-glow {
+    animation: rainbow-glow 3s linear infinite;
+  }
+
+  .rainbow-title {
+    border: 4px solid #ff6b6b;
+    border-radius: 2rem;
+    padding: 1rem 2rem;
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    animation: rainbow-border 3s linear infinite, rainbow-glow 3s linear infinite;
+  }
+
+  .story-text {
+    line-height: 1.8;
+    font-size: 1.1rem;
+  }
+
+  .font-fredoka {
+    font-family: 'Fredoka One', cursive;
+  }
+}
