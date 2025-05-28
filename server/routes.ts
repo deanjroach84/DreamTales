@@ -103,7 +103,9 @@ Make the story unique, engaging, and filled with wonder. Include vivid descripti
 
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   
-  const result = await model.generateContent(`You are a magical storyteller who creates beautiful, educational bedtime stories for children. Your stories are always positive, gentle, and filled with wonder. Always respond with valid JSON.\n\n${prompt}`);
+  const result = await model.generateContent([
+    `You are a magical storyteller who creates beautiful, educational bedtime stories for children. Your stories are always positive, gentle, and filled with wonder. Always respond with valid JSON.\n\n${prompt}`
+  ]);
 
   const response = await result.response;
   const text = response.text();
