@@ -21,7 +21,7 @@ export default function Home() {
           <h1 className="font-fredoka text-5xl md:text-7xl text-gray-800 mb-4 rainbow-title inline-block">
             DreamTales
           </h1>
-          <p className="text-black text-lg md:text-xl font-light max-w-2xl mx-auto px-4 mt-6">
+          <p className="text-black text-lg md:text-xl font-fredoka max-w-2xl mx-auto px-4 mt-6">
             Turn your child into the hero of their own magical adventure with their favorite animal friend
           </p>
         </div>
