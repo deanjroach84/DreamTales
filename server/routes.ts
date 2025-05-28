@@ -2,11 +2,9 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { storyRequestSchema } from "@shared/schema";
-import OpenAI from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR || "default_key" 
-});
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Generate a new bedtime story
@@ -103,32 +101,28 @@ Please respond with a JSON object containing:
 
 Make the story unique, engaging, and filled with wonder. Include vivid descriptions of magical settings and gentle adventures that teach the chosen lesson naturally through the story.`;
 
-  // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      {
-        role: "system",
-        content: "You are a magical storyteller who creates beautiful, educational bedtime stories for children. Your stories are always positive, gentle, and filled with wonder. Always respond with valid JSON."
-      },
-      {
-        role: "user", 
-        content: prompt
-      }
-    ],
-    response_format: { type: "json_object" },
-    max_tokens: 2000,
-    temperature: 0.8,
-  });
-
-  const result = JSON.parse(response.choices[0].message.content || "{}");
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   
-  if (!result.title || !result.content) {
+  const result = await model.generateContent(`You are a magical storyteller who creates beautiful, educational bedtime stories for children. Your stories are always positive, gentle, and filled with wonder. Always respond with valid JSON.\n\n${prompt}`);
+
+  const response = await result.response;
+  const text = response.text();
+  
+  let parsedResult;
+  try {
+    // Clean the response text to extract JSON
+    const cleanedText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    parsedResult = JSON.parse(cleanedText);
+  } catch (error) {
+    throw new Error("Invalid response from story generation");
+  }
+  
+  if (!parsedResult.title || !parsedResult.content) {
     throw new Error("Invalid response from story generation");
   }
 
   return {
-    title: result.title,
-    content: result.content
+    title: parsedResult.title,
+    content: parsedResult.content
   };
 }

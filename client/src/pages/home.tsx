@@ -22,7 +22,7 @@ export default function Home() {
             DreamTales
           </h1>
           <p className="text-white/90 text-lg md:text-xl font-light max-w-2xl mx-auto px-4 mt-6">
-            Create magical bedtime stories starring your child's favorite animals
+            Turn your child into the hero of their own magical adventure with their favorite animal friend
           </p>
         </div>
       </header>
