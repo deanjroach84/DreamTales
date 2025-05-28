@@ -1,8 +1,9 @@
 import { type Story } from "@shared/schema";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Download, Printer, Share } from "lucide-react";
+import { BookOpen, Download, Printer, Share, Play, Pause, Volume2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useState, useRef, useEffect } from "react";
 
 interface StoryDisplayProps {
   story: Story | null;
@@ -11,6 +12,54 @@ interface StoryDisplayProps {
 
 export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
   const { toast } = useToast();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const speechRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
+
+  // Load available voices
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+      return;
+    }
+
+    const loadVoices = () => {
+      const availableVoices = speechSynthesis.getVoices();
+      setVoices(availableVoices);
+      
+      // Prefer a female voice for storytelling, or default to first available
+      const preferredVoice = availableVoices.find(voice => 
+        voice.name.toLowerCase().includes('female') || 
+        voice.name.toLowerCase().includes('woman') ||
+        voice.name.toLowerCase().includes('samantha') ||
+        voice.name.toLowerCase().includes('karen')
+      ) || availableVoices[0];
+      
+      setSelectedVoice(preferredVoice);
+    };
+
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+    
+    return () => {
+      speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
+
+  // Cleanup speech when component unmounts or story changes
+  useEffect(() => {
+    return () => {
+      if (speechRef.current && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        speechSynthesis.cancel();
+        setIsPlaying(false);
+        setIsPaused(false);
+      }
+    };
+  }, [story]);
+
+  // Check if speech synthesis is supported
+  const isSpeechSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
   const handlePrint = () => {
     window.print();
@@ -61,6 +110,83 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
         description: "Story has been copied to clipboard!",
       });
     }
+  };
+
+  const handlePlayPause = () => {
+    if (!story || !isSpeechSupported) return;
+
+    if (isPlaying && !isPaused) {
+      // Pause
+      speechSynthesis.pause();
+      setIsPaused(true);
+      toast({
+        title: "Story Paused",
+        description: "Audio narration paused",
+      });
+    } else if (isPaused) {
+      // Resume
+      speechSynthesis.resume();
+      setIsPaused(false);
+      toast({
+        title: "Story Resumed",
+        description: "Audio narration resumed",
+      });
+    } else {
+      // Start new narration
+      speechSynthesis.cancel(); // Cancel any existing speech
+      
+      const utterance = new SpeechSynthesisUtterance(`${story.title}. ${story.content}`);
+      utterance.rate = 0.8; // Slightly slower for bedtime stories
+      utterance.pitch = 1.1; // Slightly higher pitch for warmth
+      utterance.volume = 0.9;
+      
+      if (selectedVoice) {
+        utterance.voice = selectedVoice;
+      }
+
+      utterance.onstart = () => {
+        setIsPlaying(true);
+        setIsPaused(false);
+        toast({
+          title: "Story Narration Started",
+          description: "Audio narration has begun",
+        });
+      };
+
+      utterance.onend = () => {
+        setIsPlaying(false);
+        setIsPaused(false);
+        toast({
+          title: "Story Complete",
+          description: "Audio narration finished",
+        });
+      };
+
+      utterance.onerror = () => {
+        setIsPlaying(false);
+        setIsPaused(false);
+        toast({
+          title: "Narration Error",
+          description: "Unable to play audio narration",
+          variant: "destructive",
+        });
+      };
+
+      speechRef.current = utterance;
+      speechSynthesis.speak(utterance);
+    }
+  };
+
+  const handleStopNarration = () => {
+    if (!isSpeechSupported) return;
+    
+    speechSynthesis.cancel();
+    setIsPlaying(false);
+    setIsPaused(false);
+    toast({
+      title: "Story Stopped",
+      description: "Audio narration stopped",
+    });
   };
 
   return (
@@ -150,6 +276,45 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
 
                 {/* Story Actions */}
                 <div className="flex flex-wrap gap-3 pt-6 border-t border-gentle-gray">
+                  {/* Audio Narration Controls */}
+                  {isSpeechSupported && (
+                    <>
+                      <Button
+                        onClick={handlePlayPause}
+                        variant="outline"
+                        className="flex items-center space-x-2 bg-coral-pink hover:bg-pink-100 text-pink-700 border-coral-pink"
+                      >
+                        {isPlaying && !isPaused ? (
+                          <>
+                            <Pause className="w-4 h-4" />
+                            <span>Pause Story</span>
+                          </>
+                        ) : isPaused ? (
+                          <>
+                            <Play className="w-4 h-4" />
+                            <span>Resume Story</span>
+                          </>
+                        ) : (
+                          <>
+                            <Volume2 className="w-4 h-4" />
+                            <span>Listen to Story</span>
+                          </>
+                        )}
+                      </Button>
+                      
+                      {(isPlaying || isPaused) && (
+                        <Button
+                          onClick={handleStopNarration}
+                          variant="outline"
+                          className="flex items-center space-x-2 bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-300"
+                        >
+                          <div className="w-4 h-4 bg-gray-600 rounded-sm"></div>
+                          <span>Stop</span>
+                        </Button>
+                      )}
+                    </>
+                  )}
+
                   <Button
                     onClick={handleDownload}
                     variant="outline"
