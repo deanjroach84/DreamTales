@@ -59,15 +59,15 @@ export function StoryForm({ onStoryGenerated, isGenerating, setIsGenerating }: S
   };
 
   return (
-    <div className="bg-cloud-white rounded-3xl shadow-xl p-8 relative overflow-hidden">
+    <div className="bg-cloud-white rounded-3xl shadow-xl p-8 relative overflow-hidden border border-black">
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-coral-pink/20 to-sunshine-yellow/20 rounded-full transform translate-x-16 -translate-y-16"></div>
       
       <div className="relative z-10">
         <div className="flex items-center mb-6">
-          <div className="bg-lavender p-3 rounded-2xl mr-4">
+          <div className="bg-lavender p-3 rounded-2xl mr-4 border border-black">
             <Sparkles className="text-2xl text-purple-600 w-6 h-6" />
           </div>
-          <h2 className="font-fredoka text-3xl text-gray-800">Create Your Story</h2>
+          <h2 className="font-fredoka text-4xl text-gray-800">Create Your Story</h2>
         </div>
 
         <Form {...form}>
@@ -152,7 +152,7 @@ export function StoryForm({ onStoryGenerated, isGenerating, setIsGenerating }: S
             <Button 
               type="submit"
               disabled={isGenerating}
-              className="w-full bg-gradient-to-r from-pink-400 to-yellow-400 hover:from-pink-500 hover:to-yellow-500 text-white font-semibold py-4 px-6 rounded-2xl text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center space-x-2"
+              className="w-full bg-gradient-to-r from-pink-400 to-yellow-400 hover:from-pink-500 hover:to-yellow-500 text-white font-semibold py-4 px-6 rounded-2xl text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center space-x-2 border border-transparent hover:border-black"
             >
               <Sparkles className="w-5 h-5" />
               <span>{isGenerating ? "Creating Magic..." : "Create My Magic Story"}</span>

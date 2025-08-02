@@ -190,17 +190,17 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
   };
 
   return (
-    <Card className="bg-cloud-white rounded-3xl shadow-xl relative overflow-hidden">
+    <Card className="bg-cloud-white rounded-3xl shadow-xl relative overflow-hidden border border-black">
       {/* Dreamy background illustration */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-lavender/10 to-transparent rounded-t-3xl"></div>
       
       <CardContent className="p-8 relative z-10">
         {/* Story Header */}
         <div className="flex items-center mb-6">
-          <div className="bg-soft-green p-3 rounded-2xl mr-4">
+          <div className="bg-soft-green p-3 rounded-2xl mr-4 border border-black">
             <BookOpen className="text-2xl text-green-600 w-6 h-6" />
           </div>
-          <h2 className="font-fredoka text-3xl text-gray-800">Your Magical Story</h2>
+          <h2 className="font-fredoka text-4xl text-gray-800">Your Magical Story</h2>
         </div>
 
         {/* Loading State */}
@@ -232,9 +232,9 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
             </div>
             
             {/* Loading text */}
-            <div className="space-y-3">
+            <div className="space-y-6">
               <p className="text-gray-700 text-xl font-fredoka animate-pulse-glow">Weaving your magical tale...</p>
-              <p className="text-gray-500 text-sm">Our storytelling wizard is crafting something special ✨</p>
+              <p className="text-gray-800 text-sm animate-pulse-glow">Our storytelling wizard is crafting something special ✨</p>
             </div>
           </div>
         )}
@@ -245,15 +245,15 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
             {/* Default content when no story */}
             {!story && (
               <div className="space-y-6">
-                <div className="w-full h-64 object-cover rounded-2xl mb-6 bg-gradient-to-br from-lavender/20 to-gentle-blue/20 flex items-center justify-center">
+                <div className="w-full object-cover rounded-2xl mb-6 bg-gradient-to-br from-lavender/20 to-gentle-blue/20 flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-6xl mb-4">📚</div>
-                    <p className="text-gray-600 font-medium">Ready to create magic?</p>
+                    <p className="text-gray-600 font-semibold text-lg">Ready to create magic?</p>
                   </div>
                 </div>
                 
                 <div className="prose prose-lg max-w-none">
-                  <h3 className="font-fredoka text-2xl text-gray-800 mb-4">
+                  <h3 className="font-fredoka text-4xl text-gray-800 mb-4 text-center">
                     Welcome to DreamTales!
                   </h3>
                   
@@ -271,7 +271,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
             {/* Generated story content */}
             {story && (
               <div className="space-y-6">
-                <div className="w-full h-64 object-cover rounded-2xl mb-6 bg-gradient-to-br from-lavender/20 to-gentle-blue/20 flex items-center justify-center">
+                <div className="w-full object-cover rounded-2xl mb-6 bg-gradient-to-br from-lavender/20 to-gentle-blue/20 flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-6xl mb-4">🌟</div>
                     <p className="text-gray-600 font-medium">Your magical story is ready!</p>
@@ -285,7 +285,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
                   
                   <div className="story-text text-gray-700 space-y-4">
                     {story.content.split('\n\n').map((paragraph, index) => (
-                      <p key={index} className="opacity-0 animate-in fade-in duration-700" style={{ animationDelay: `${index * 200}ms`, animationFillMode: 'forwards' }}>
+                      <p key={index} className="opacity-1 animate-in fade-in duration-700" style={{ animationDelay: `${index * 200}ms`, animationFillMode: 'forwards', fontFamily: 'Times New Roman, Times, serif', fontSize: '1.2rem',}}>
                         {paragraph}
                       </p>
                     ))}

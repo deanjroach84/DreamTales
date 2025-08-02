@@ -1,0 +1,4 @@
+{
+  "editor.formatOnSave": true,
+  "tailwindCSS.config": "./tailwind.config.ts"
+}

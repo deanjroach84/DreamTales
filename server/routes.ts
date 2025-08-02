@@ -3,6 +3,8 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { storyRequestSchema } from "@shared/schema";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
 
@@ -81,7 +83,7 @@ async function generateBedtimeStory(childName: string, animal: string, theme: st
     honesty: "the value of telling the truth and being honest",
     perseverance: "never giving up even when things are hard",
     empathy: "understanding and caring about how others feel",
-    curiosity: "the excitement of exploring and learning new things"
+    curiosity: "the excitement of exploring and learning new things",
   };
 
   const prompt = `Create a magical bedtime story for a child named ${childName}. The story should:
@@ -104,7 +106,7 @@ Make the story unique, engaging, and filled with wonder. Include vivid descripti
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   
   const result = await model.generateContent([
-    `You are a magical storyteller who creates beautiful, educational bedtime stories for children. Your stories are always positive, gentle, and filled with wonder. Always respond with valid JSON.\n\n${prompt}`
+    `You are a magical storyteller who creates beautiful, educational bedtime stories for children. Your stories are always positive, gentle, and filled with wonder. Give every story a different title. Always respond with valid JSON.\n\n${prompt}`
   ]);
 
   const response = await result.response;
@@ -128,3 +130,5 @@ Make the story unique, engaging, and filled with wonder. Include vivid descripti
     content: parsedResult.content
   };
 }
+
+console.log("Google API Key loaded:", process.env.GOOGLE_API_KEY);

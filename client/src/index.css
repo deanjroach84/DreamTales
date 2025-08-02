@@ -25,9 +25,9 @@
   --radius: 0.75rem;
   
   /* Custom DreamTales colors */
-  --lavender: 280 100% 93%; /* #E6E6FA */
-  --gentle-blue: 194 53% 79%; /* #B0E0E6 */
-  --soft-green: 134 41% 88%; /* #E0F2E7 */
+  --lavender: 270 100% 90%; /* #E6E6FA */
+  --gentle-blue: 220 80% 85%; /* #B0E0E6 */
+  --soft-green: 140 60% 80%; /* #E0F2E7 */
   --warm-cream: 44 87% 94%; /* #FDF6E3 */
   --coral-pink: 0 69% 85%; /* #FFB3BA */
   --sunshine-yellow: 35 100% 87%; /* #FFDFBA */
@@ -70,7 +70,7 @@
   }
 
   h1, h2, h3 {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', cursive;
   }
 }
 
@@ -259,6 +259,6 @@
   }
 
   .font-fredoka {
-    font-family: 'Fredoka One', cursive;
+    font-family: 'Fredoka', cursive;
   }
 }
