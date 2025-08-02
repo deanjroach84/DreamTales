@@ -27,27 +27,25 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
     const loadVoices = () => {
       const availableVoices = speechSynthesis.getVoices();
       setVoices(availableVoices);
-      
-      // Prefer a female voice for storytelling, or default to first available
-      const preferredVoice = availableVoices.find(voice => 
-        voice.name.toLowerCase().includes('female') || 
+
+      const preferredVoice = availableVoices.find(voice =>
+        voice.name.toLowerCase().includes('female') ||
         voice.name.toLowerCase().includes('woman') ||
         voice.name.toLowerCase().includes('samantha') ||
         voice.name.toLowerCase().includes('karen')
       ) || availableVoices[0];
-      
+
       setSelectedVoice(preferredVoice);
     };
 
     loadVoices();
     speechSynthesis.onvoiceschanged = loadVoices;
-    
+
     return () => {
       speechSynthesis.onvoiceschanged = null;
     };
   }, []);
 
-  // Cleanup speech when component unmounts or story changes
   useEffect(() => {
     return () => {
       if (speechRef.current && typeof window !== 'undefined' && 'speechSynthesis' in window) {
@@ -58,7 +56,6 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
     };
   }, [story]);
 
-  // Check if speech synthesis is supported
   const isSpeechSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
   const handlePrint = () => {
@@ -71,7 +68,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
 
   const handleDownload = () => {
     if (!story) return;
-    
+
     const content = `${story.title}\n\n${story.content}`;
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -82,7 +79,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
+
     toast({
       title: "Story Downloaded",
       description: "Your magical story has been saved!",
@@ -91,7 +88,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
 
   const handleShare = async () => {
     if (!story) return;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -103,7 +100,6 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
         // User cancelled share
       }
     } else {
-      // Fallback to clipboard
       await navigator.clipboard.writeText(`${story.title}\n\n${story.content}`);
       toast({
         title: "Story Copied",
@@ -116,7 +112,6 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
     if (!story || !isSpeechSupported) return;
 
     if (isPlaying && !isPaused) {
-      // Pause
       speechSynthesis.pause();
       setIsPaused(true);
       toast({
@@ -124,7 +119,6 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
         description: "Audio narration paused",
       });
     } else if (isPaused) {
-      // Resume
       speechSynthesis.resume();
       setIsPaused(false);
       toast({
@@ -132,14 +126,13 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
         description: "Audio narration resumed",
       });
     } else {
-      // Start new narration
-      speechSynthesis.cancel(); // Cancel any existing speech
-      
+      speechSynthesis.cancel();
+
       const utterance = new SpeechSynthesisUtterance(`${story.title}. ${story.content}`);
-      utterance.rate = 0.8; // Slightly slower for bedtime stories
-      utterance.pitch = 1.1; // Slightly higher pitch for warmth
+      utterance.rate = 0.8;
+      utterance.pitch = 1.1;
       utterance.volume = 0.9;
-      
+
       if (selectedVoice) {
         utterance.voice = selectedVoice;
       }
@@ -179,7 +172,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
 
   const handleStopNarration = () => {
     if (!isSpeechSupported) return;
-    
+
     speechSynthesis.cancel();
     setIsPlaying(false);
     setIsPaused(false);
@@ -191,11 +184,9 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
 
   return (
     <Card className="bg-cloud-white rounded-3xl shadow-xl relative overflow-hidden border border-black">
-      {/* Dreamy background illustration */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-lavender/10 to-transparent rounded-t-3xl"></div>
-      
+
       <CardContent className="p-8 relative z-10">
-        {/* Story Header */}
         <div className="flex items-center mb-6">
           <div className="bg-soft-green p-3 rounded-2xl mr-4 border border-black">
             <BookOpen className="text-2xl text-green-600 w-6 h-6" />
@@ -203,26 +194,18 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
           <h2 className="font-fredoka text-4xl text-gray-800">Your Magical Story</h2>
         </div>
 
-        {/* Loading State */}
         {isGenerating && (
           <div className="text-center py-12">
             <div className="relative mb-8">
-              {/* Main story book */}
               <div className="w-72 h-52 mx-auto rounded-3xl bg-gradient-to-br from-lavender/30 to-gentle-blue/30 animate-pulse-glow flex items-center justify-center relative overflow-hidden">
-                {/* Shimmer effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-story-shimmer"></div>
-                
-                {/* Floating magical elements */}
                 <div className="absolute top-4 left-8 text-2xl animate-floating-stars">✨</div>
                 <div className="absolute top-8 right-6 text-xl animate-floating-stars" style={{ animationDelay: "1s" }}>🌟</div>
                 <div className="absolute bottom-6 left-6 text-lg animate-floating-stars" style={{ animationDelay: "2s" }}>💫</div>
                 <div className="absolute bottom-4 right-8 text-2xl animate-floating-stars" style={{ animationDelay: "3s" }}>✨</div>
-                
-                {/* Central book icon */}
                 <div className="text-7xl animate-bounce-gentle">📖</div>
               </div>
-              
-              {/* Progress dots */}
+
               <div className="flex items-center justify-center space-x-3 mt-6">
                 <div className="w-3 h-3 bg-coral-pink rounded-full animate-bounce"></div>
                 <div className="w-3 h-3 bg-sunshine-yellow rounded-full animate-bounce" style={{ animationDelay: "0.3s" }}></div>
@@ -230,8 +213,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
                 <div className="w-3 h-3 bg-soft-green rounded-full animate-bounce" style={{ animationDelay: "0.9s" }}></div>
               </div>
             </div>
-            
-            {/* Loading text */}
+
             <div className="space-y-6">
               <p className="text-gray-700 text-xl font-fredoka animate-pulse-glow">Weaving your magical tale...</p>
               <p className="text-gray-800 text-sm animate-pulse-glow">Our storytelling wizard is crafting something special ✨</p>
@@ -239,10 +221,8 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
           </div>
         )}
 
-        {/* Story Content */}
         {!isGenerating && (
           <div className="space-y-6">
-            {/* Default content when no story */}
             {!story && (
               <div className="space-y-6">
                 <div className="w-full object-cover rounded-2xl mb-6 bg-gradient-to-br from-lavender/20 to-gentle-blue/20 flex items-center justify-center">
@@ -251,24 +231,21 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
                     <p className="text-gray-600 font-semibold text-lg">Ready to create magic?</p>
                   </div>
                 </div>
-                
+
                 <div className="prose prose-lg max-w-none">
                   <h3 className="font-fredoka text-4xl text-gray-800 mb-4 text-center">
                     Welcome to DreamTales!
                   </h3>
-                  
+
                   <div className="story-text text-gray-700 space-y-4">
                     <p>Choose your child's name, their favorite animal, and a meaningful theme to create a personalized bedtime story that will spark their imagination and teach valuable life lessons.</p>
-                    
                     <p>Our magical story generator will create a unique tale featuring your child as the main character, alongside their favorite animal friend. Each story is carefully crafted to be engaging, educational, and perfect for bedtime reading.</p>
-                    
                     <p>Fill out the form on the left to begin your storytelling adventure! ✨</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* Generated story content */}
             {story && (
               <div className="space-y-6">
                 <div className="w-full object-cover rounded-2xl mb-6 bg-gradient-to-br from-lavender/20 to-gentle-blue/20 flex items-center justify-center">
@@ -277,24 +254,50 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
                     <p className="text-gray-600 font-medium">Your magical story is ready!</p>
                   </div>
                 </div>
-                
+
                 <div className="prose prose-lg max-w-none">
                   <h3 className="font-fredoka text-2xl text-gray-800 mb-4">
                     {story.title}
                   </h3>
-                  
+
                   <div className="story-text text-gray-700 space-y-4">
                     {story.content.split('\n\n').map((paragraph, index) => (
-                      <p key={index} className="opacity-1 animate-in fade-in duration-700" style={{ animationDelay: `${index * 200}ms`, animationFillMode: 'forwards', fontFamily: 'Times New Roman, Times, serif', fontSize: '1.2rem',}}>
+                      <p key={index} className="opacity-1 animate-in fade-in duration-700" style={{ animationDelay: `${index * 200}ms`, animationFillMode: 'forwards', fontFamily: 'Times New Roman, Times, serif', fontSize: '1.2rem', }}>
                         {paragraph}
                       </p>
                     ))}
                   </div>
                 </div>
 
-                {/* Story Actions */}
+                {/* 🎙️ Voice Selector */}
+                {isSpeechSupported && voices.length > 0 && (
+                  <div className="mb-6">
+                    <label
+                      htmlFor="voice-select"
+                      className="block mb-2 text-sm font-semibold text-gray-700 font-fredoka"
+                    >
+                      Choose Narrator Voice
+                    </label>
+                    <select
+                      id="voice-select"
+                      value={selectedVoice?.name || ''}
+                      onChange={(e) => {
+                        const selected = voices.find(v => v.name === e.target.value);
+                        if (selected) setSelectedVoice(selected);
+                      }}
+                      className="block w-full px-4 py-2 bg-white border border-gentle-gray rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-coral-pink focus:border-coral-pink text-gray-800"
+                    >
+                      {voices.map((voice) => (
+                        <option key={voice.name} value={voice.name}>
+                          {voice.name} ({voice.lang})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* 🎛️ Story Actions */}
                 <div className="flex flex-wrap gap-3 pt-6 border-t border-gentle-gray">
-                  {/* Audio Narration Controls */}
                   {isSpeechSupported && (
                     <>
                       <Button
@@ -319,7 +322,7 @@ export function StoryDisplay({ story, isGenerating }: StoryDisplayProps) {
                           </>
                         )}
                       </Button>
-                      
+
                       {(isPlaying || isPaused) && (
                         <Button
                           onClick={handleStopNarration}
